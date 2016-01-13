@@ -123,6 +123,51 @@ def maximum(image, rgb):
           M = image[i,j,rgb]
   return M
 
+# maximum (unsorted, image)
+def max_img(image):
+  tmp = np.array(image)
+  [Nx, Ny, C] = tmp.shape
+  for i in range(Nx):
+    for j in range(Ny):
+      if tmp[i,j,0] >= tmp[i,j,1] and tmp[i,j,0] >= tmp[i,j,2]:
+        tmp[i,j,1] = tmp[i,j,0]
+        tmp[i,j,2] = tmp[i,j,0]
+      elif tmp[i,j,1] >= tmp[i,j,0] and tmp[i,j,1] >= tmp[i,j,2]:
+        tmp[i,j,0] = tmp[i,j,1]
+        tmp[i,j,2] = tmp[i,j,1]
+      else:
+        tmp[i,j,0] = tmp[i,j,2]
+        tmp[i,j,1] = tmp[i,j,2]
+  return tmp
+
+# minimum (unsorted, image)
+def min_img(image):
+  tmp = np.array(image)
+  [Nx, Ny, C] = tmp.shape
+  for i in range(Nx):
+    for j in range(Ny):
+      if tmp[i,j,0] <= tmp[i,j,1] and tmp[i,j,0] <= tmp[i,j,2]:
+        tmp[i,j,1] = tmp[i,j,0]
+        tmp[i,j,2] = tmp[i,j,0]
+      elif tmp[i,j,1] <= tmp[i,j,0] and tmp[i,j,1] <= tmp[i,j,2]:
+        tmp[i,j,0] = tmp[i,j,1]
+        tmp[i,j,2] = tmp[i,j,1]
+      else:
+        tmp[i,j,0] = tmp[i,j,2]
+        tmp[i,j,1] = tmp[i,j,2] 
+  return tmp
+
+# lightness grayscale
+def rgb_to_gray_lit(image_min, image_max):
+  tmp = np.array(image_min)
+  [Nx, Ny, C] = tmp.shape
+  for i in range(Nx):
+    for j in range(Ny):
+      tmp[i,j,0] = (image_min[i,j,0] + image_max[i,j,0]) * 0.5
+      tmp[i,j,1] = (image_min[i,j,1] + image_max[i,j,1]) * 0.5
+      tmp[i,j,2] = (image_min[i,j,2] + image_max[i,j,2]) * 0.5
+  return tmp
+
 # selection sort
 def selectionsort(A, n):
   for i in range(n):
@@ -162,4 +207,63 @@ def merge(A,n,m):
       i = i+1
   for i in range(n):
     A[i] = B[i]
+
+# recursive factorial
+def factorial(n):
+  if n == 1:
+    return 1
+  else:
+    return n * factorial(n-1)
+
+
+# search (unsorted)
+def search_unsorted(A, val):
+  n = len(A)
+  imatch = -1
+  for i in range(n):
+    if A[i] == val:
+      imatch = i
+  return imatch
+
+# search (binary)
+def binary_search(A, s, e, val):
+  if e < s:
+    return -1
+  else:
+    m = round((s + e)*0.5)
+    if A[m] > val:
+      return binary_search(A, s, m-1, val)
+    elif A[m] < val:
+      return binary_search(A, m+1, e, val)
+    else:
+      return m
+
+# convolution
+def convolution(image, kernel):
+  tmp = np.array(image)
+  [Nx, Ny, C] = tmp.shape
+  kernel = np.array(kernel)
+  [kNx, kNy] = kernel.shape
+  for i in range(Nx):
+    for j in range(Ny):
+      print(i)
+      Rval = 0 
+      Gval = 0 
+      Bval = 0 
+      for p in range(kNx):
+        for q in range(kNy):
+          ii = p - np.floor(0.5 * kNx)
+          jj = q - np.floor(0.5 * kNy)
+          if i + ii >= 0 and i + ii < Nx-1 and j + jj >= 0 and j + jj <= Ny-1:
+            Rval = Rval + image[i+ii, j+jj,0] * kernel[p,q]
+            Gval = Gval + image[i+ii, j+jj,1] * kernel[p,q]
+            Bval = Bval + image[i+ii, j+jj,2] * kernel[p,q]
+      tmp[i,j,0] = Rval
+      tmp[i,j,1] = Gval
+      tmp[i,j,2] = Bval
+  return tmp
+
+ 
+
+
 

@@ -18,14 +18,24 @@ img = improc.read("gilman-hall.jpg")
 
 #improc.show_n([img,smaller,diff])
 
-n = 500
-A = np.random.rand(n)
-A2 = np.array(A)
-t0 = time.time()
-improc.selectionsort(A,n)
-t1 = time.time()
-improc.mergesort(A2,n)
-t2 = time.time()
-print(t1-t0, t2-t1)
+#n = 500
+#A = np.random.rand(n)
+#A2 = np.array(A)
+#t0 = time.time()
+#improc.selectionsort(A,n)
+#t1 = time.time()
+#improc.mergesort(A2,n)
+#t2 = time.time()
+#print(t1-t0, t2-t1)
 
-# I ADDED THIS LINE
+kern = [[-1,-1,-1],[-1,8,-1],[-1,-1,-1]]
+kern_G  =[[1/16,2/16,1/16],[2/16,4/16,2/16],[1/16,2/16,1/16]]
+gauss = improc.convolution(img,kern_G)
+edges = improc.convolution(img,kern)
+improc.show_n([img,edges,gauss])
+
+
+
+
+
+
